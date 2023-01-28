@@ -10,14 +10,14 @@ import UIKit
 protocol SceneFactoryProtocol: AnyObject {
     func createFindPhotoViewController(router: RootRouter) -> FindPhotosViewController
     func createEffectViewController(router: RootRouter, images: [Data]) -> EffectViewController
-    func createRenderingViewController() -> RenderingViewController 
+    func createBlockViewController() -> BlockViewController 
 }
 
 final class SceneFactory: SceneFactoryProtocol {
     
     func createFindPhotoViewController(router: RootRouter) -> FindPhotosViewController {
         let view = FindPhotosViewController()
-        let networkService = NetworkService()
+        let networkService = FindPhotoNetworkService(networkService: NetworkService())
         let presenter = FindPhotosPresenter(view: view,
                                             router: router,
                                             networkService: networkService)
@@ -34,7 +34,7 @@ final class SceneFactory: SceneFactoryProtocol {
         return view
     }
     
-    func createRenderingViewController() -> RenderingViewController {
-        return RenderingViewController()
+    func createBlockViewController() -> BlockViewController {
+        return BlockViewController()
     }
 }

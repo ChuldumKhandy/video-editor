@@ -13,16 +13,24 @@ protocol EffectViewDelegate: AnyObject {
 
 final class EffectView: UIView {
     
+    private enum Constants {
+        static let textSize: CGFloat = 20
+        static let radius: CGFloat = 6
+        static let top = 12
+        static let leading = 16
+        static let imageSize = 46
+    }
+    
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .black
-        imageView.addCornerRadius(radius: 6)
+        imageView.addCornerRadius(radius: Constants.radius)
         return imageView
     }()
     
     private lazy var titleLabel: UILabel = {
        let label = UILabel()
-        label.font = UIFont.interMedium(20)
+        label.font = UIFont.interMedium(Constants.textSize)
         label.textColor = .black
         label.textAlignment = .center
         return label
@@ -55,7 +63,7 @@ final class EffectView: UIView {
         self.addGestureRecognizer(tapGesture)
         
         self.layer.setBorder(color: .clear, width: 2)
-        self.addCornerRadius(radius: 6)
+        self.addCornerRadius(radius: Constants.radius)
         
         self.addSubview(imageView)
         self.addSubview(titleLabel)
@@ -70,14 +78,14 @@ final class EffectView: UIView {
     
     private func makeConstraints() {
         titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.top.equalTo(imageView.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().offset(Constants.leading)
+            $0.top.equalTo(imageView.snp.bottom).offset(Constants.top)
             $0.centerX.equalToSuperview()
         }
         
         imageView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.height.equalTo(46)
+            $0.width.height.equalTo(Constants.imageSize)
         }
     }
 }

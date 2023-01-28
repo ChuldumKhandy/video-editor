@@ -55,7 +55,7 @@ final class EffectPresenter: EffectPresenterProtocol {
     }
     
     func tappedNextButton() {
-        router.presesentRenderingView()
+        router.presesentBlockView()
         beginTransition()
     }
     
@@ -66,10 +66,11 @@ final class EffectPresenter: EffectPresenterProtocol {
                         forMode: RunLoop.Mode.default)
     }
     
-    @objc private func stepTime() {
+    @objc
+    private func stepTime() {
         time += step
         guard time < 1 else {
-            router.dismissRenderingView()
+            router.dismissBlockView()
             displayLink.remove(from: RunLoop.main,
                                forMode: RunLoop.Mode.default)
             render()
@@ -122,9 +123,9 @@ final class EffectPresenter: EffectPresenterProtocol {
     }
     
     private func render() {
-        let imageAnimator = ImageAnimator(renderSettings: settings,
+        let videoManager = VideoManager(renderSettings: settings,
                                           images: filtredImage)
-        imageAnimator.render { result in
+        videoManager.render { result in
             switch result {
             case .failure:
                 self.showErrorAlert()
@@ -135,7 +136,7 @@ final class EffectPresenter: EffectPresenterProtocol {
     }
     
     private func showErrorAlert() {
-        router.dismissRenderingView()
+        router.dismissBlockView()
         router.presesentErrorAlert()
     }
 }

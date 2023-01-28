@@ -48,7 +48,6 @@ extension UIImage {
 }
 
 extension UICollectionView {
-
     func register<T>(classCell: T.Type) where T: UICollectionViewCell {
         self.register(classCell, forCellWithReuseIdentifier: classCell.className)
     }
@@ -59,7 +58,6 @@ extension UICollectionView {
         }
         return T()
     }
-
 }
 
 extension NSObject {
@@ -93,39 +91,11 @@ extension UIView {
 }
 
 extension CALayer {
-    private func addShadowWithRoundedCorners() {
-        masksToBounds = false
-        sublayers?.filter { $0.frame.equalTo(self.bounds) }
-            .forEach { $0.roundCorners(radius: self.cornerRadius, mask: self.maskedCorners) }
-
-        self.contents = nil
-
-        if let sublayer = sublayers?.first,
-            sublayer.name == "#shadowLayer#" {
-
-            sublayer.removeFromSuperlayer()
-        }
-
-        let contentLayer = CALayer()
-        contentLayer.name = "#shadowLayer#"
-        contentLayer.contents = contents
-        contentLayer.frame = bounds
-        contentLayer.cornerRadius = cornerRadius
-        contentLayer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        contentLayer.masksToBounds = true
-
-        insertSublayer(contentLayer, at: 0)
-    }
-
     func roundCorners(radius: CGFloat, mask: CACornerMask? = nil) {
         self.cornerRadius = radius
 
         if let mask = mask {
             self.maskedCorners = mask
-        }
-
-        if shadowOpacity != 0 {
-            addShadowWithRoundedCorners()
         }
     }
     
@@ -135,10 +105,6 @@ extension CALayer {
         self.shadowRadius = radius
         self.shadowColor = color.cgColor
         self.masksToBounds = false
-
-        if cornerRadius != 0 {
-            addShadowWithRoundedCorners()
-        }
     }
     
     func setBorder(color: UIColor, width: CGFloat) {
@@ -148,52 +114,30 @@ extension CALayer {
 }
 
 extension UIColor {
-    
-    convenience init?(string: String) {
-        var red, green, blue, alpha: UInt64
-        let start: String.Index
-        if string.hasPrefix("#") {
-            start = string.index(string.startIndex, offsetBy: 1)
-        } else {
-            start = string.index(string.startIndex, offsetBy: 0)
-        }
-        let hexColor = String(string[start...])
-        if hexColor.count == 8 || hexColor.count == 6 {
-            var startIndex = hexColor.index(hexColor.startIndex, offsetBy: 0)
-            var endIndex = hexColor.index(hexColor.startIndex, offsetBy: 1)
-            let rString = String(hexColor[startIndex...endIndex])
-            startIndex = hexColor.index(hexColor.startIndex, offsetBy: 2)
-            endIndex = hexColor.index(hexColor.startIndex, offsetBy: 3)
-            let gString = String(hexColor[startIndex...endIndex])
-            startIndex = hexColor.index(hexColor.startIndex, offsetBy: 4)
-            endIndex = hexColor.index(hexColor.startIndex, offsetBy: 5)
-            let bString = String(hexColor[startIndex...endIndex])
-            
-            var scan = Scanner(string: rString)
-            red = 0
-            scan.scanHexInt64(&red)
-            scan = Scanner(string: gString)
-            green = 0
-            scan.scanHexInt64(&green)
-            scan = Scanner(string: bString)
-            blue = 0
-            scan.scanHexInt64(&blue)
+    convenience init?(hex: String) {
+        let red, green, blue, alpha: CGFloat
+
+        if hex.hasPrefix("#") {
+            let start = hex.index(hex.startIndex, offsetBy: 1)
+            let hexColor = String(hex[start...])
+
             if hexColor.count == 8 {
-                startIndex = hexColor.index(hexColor.startIndex, offsetBy: 6)
-                endIndex = hexColor.index(hexColor.startIndex, offsetBy: 7)
-                let aString = String(hexColor[startIndex...endIndex])
-                scan = Scanner(string: aString)
-                alpha = 0
-                scan.scanHexInt64(&alpha)
-            } else {
-                alpha = 255
+                let scanner = Scanner(string: hexColor)
+                var hexNumber: UInt64 = 0
+
+                if scanner.scanHexInt64(&hexNumber) {
+                    red = CGFloat((hexNumber & 0xff000000) >> 24) / 255
+                    green = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
+                    blue = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
+                    alpha = CGFloat(hexNumber & 0x000000ff) / 255
+
+                    self.init(red: red,
+                              green: green,
+                              blue: blue,
+                              alpha: alpha)
+                    return
+                }
             }
-            self.init(red: CGFloat(red) / 255,
-                      green: CGFloat(green) / 255,
-                      blue: CGFloat(blue) / 255,
-                      alpha: CGFloat(alpha) / 255)
-            return
-            
         }
         return nil
     }

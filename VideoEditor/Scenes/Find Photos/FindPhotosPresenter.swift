@@ -21,7 +21,7 @@ final class FindPhotosPresenter: FindPhotosPresenterProtocol {
     
     weak var view: FindPhotosViewProtocol?
     private let router: FindPhotoRouterProtocol
-    private var networkService: NetworkServiceProtocol
+    private var networkService: FindPhotoNetworkServiceProtocol
     private var selectedImages: [Data] = []
     
     var photoModels: [PhotoModel] = []
@@ -32,7 +32,7 @@ final class FindPhotosPresenter: FindPhotosPresenterProtocol {
     
     init(view: FindPhotosViewProtocol,
          router: FindPhotoRouterProtocol,
-         networkService: NetworkServiceProtocol) {
+         networkService: FindPhotoNetworkServiceProtocol) {
         self.view = view
         self.router = router
         self.networkService = networkService

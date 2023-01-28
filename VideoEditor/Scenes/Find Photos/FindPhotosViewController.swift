@@ -17,16 +17,31 @@ final class FindPhotosViewController: UIViewController, FindPhotosViewProtocol {
     
     var presenter: FindPhotosPresenterProtocol?
     
+    enum Constants {
+        static let textSize: CGFloat = 20
+        static let spacing: CGFloat = 8
+        static let topSpacing: CGFloat = 24
+        static let bottomSpacing: CGFloat = 100
+        static let radius: CGFloat = 6
+        static let top = 16
+        static let leading = 16
+        static let bottom = 56
+        static let navViewHeight = 124
+        static let buttonHeight = 52
+    }
+    
     private lazy var navView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
+        view.addCornerRadius(radius: Constants.radius,
+                             mask: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
         return view
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Find photos"
-        label.font = UIFont.interBold(20)
+        label.font = UIFont.interBold(Constants.textSize)
         label.textColor = .black
         return label
     }()
@@ -43,12 +58,12 @@ final class FindPhotosViewController: UIViewController, FindPhotosViewProtocol {
         let collectionView = UICollectionView(frame: .zero,
                                               collectionViewLayout: UICollectionViewFlowLayout())
         let layout = CollectionViewWaterfallLayout()
-        layout.minimumColumnSpacing = 8
-        layout.minimumInteritemSpacing = 8
-        layout.sectionInset = UIEdgeInsets(top: 24,
-                                           left: 8,
-                                           bottom: 150,
-                                           right: 8)
+        layout.minimumColumnSpacing = Float(Constants.spacing)
+        layout.minimumInteritemSpacing = Float(Constants.spacing)
+        layout.sectionInset = UIEdgeInsets(top: Constants.topSpacing,
+                                           left: Constants.spacing,
+                                           bottom: Constants.bottomSpacing,
+                                           right: Constants.spacing)
         collectionView.collectionViewLayout = layout
         collectionView.register(classCell: PhotoCell.self)
         collectionView.dataSource = self
@@ -110,17 +125,17 @@ final class FindPhotosViewController: UIViewController, FindPhotosViewProtocol {
         navView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            $0.height.equalTo(124)
+            $0.height.equalTo(Constants.navViewHeight)
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(Constants.top)
             $0.centerX.equalToSuperview()
         }
         
         searchBar.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(16)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.top)
+            $0.leading.equalToSuperview().offset(Constants.leading)
             $0.centerX.equalToSuperview()
         }
         
@@ -130,10 +145,10 @@ final class FindPhotosViewController: UIViewController, FindPhotosViewProtocol {
         }
         
         nextButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(Constants.leading)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-56)
-            $0.height.equalTo(52)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-Constants.bottom)
+            $0.height.equalTo(Constants.buttonHeight)
         }
     }
     
