@@ -1,5 +1,5 @@
 //
-//  RenderingViewController.swift
+//  BlockViewController.swift
 //  VideoEditor
 //
 //  Created by Хандымаа Чульдум on 28.01.2023.
@@ -7,27 +7,36 @@
 
 import UIKit
 
-final class RenderingViewController: UIViewController {
+final class BlockViewController: UIViewController {
+    
+    private enum Constants {
+        static let titleTextSize: CGFloat = 20
+        static let descTextSize: CGFloat = 16
+        static let radius: CGFloat = 12
+        static let top = 8
+        static let leading = 32
+        static let infoViewHeight = 200
+    }
     
     private lazy var infoView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.addCornerRadius(radius: 12)
+        view.addCornerRadius(radius: Constants.radius)
         return view
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Video Processing"
-        label.font = UIFont.interBold(20)
+        label.font = UIFont.interBold(Constants.titleTextSize)
         label.textColor = .black
         return label
     }()
     
-    private lazy var decrLabel: UILabel = {
+    private lazy var descLabel: UILabel = {
         let label = UILabel()
         label.text = "Wait a little bit"
-        label.font = UIFont.interRegular(16)
+        label.font = UIFont.interRegular(Constants.descTextSize)
         label.textColor = .black
         return label
     }()
@@ -60,7 +69,7 @@ final class RenderingViewController: UIViewController {
         self.view.addSubview(infoView)
         
         infoView.addSubview(titleLabel)
-        infoView.addSubview(decrLabel)
+        infoView.addSubview(descLabel)
         infoView.addSubview(activityIndicator)
         
         makeConstraints()
@@ -73,23 +82,23 @@ final class RenderingViewController: UIViewController {
         
         infoView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.leading.equalToSuperview().offset(32)
-            $0.height.equalTo(200)
+            $0.leading.equalToSuperview().offset(Constants.leading)
+            $0.height.equalTo(Constants.infoViewHeight)
         }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(32)
+            $0.top.equalToSuperview().offset(Constants.leading)
             $0.centerX.equalToSuperview()
         }
         
-        decrLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+        descLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.top)
             $0.centerX.equalToSuperview()
         }
         
         activityIndicator.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-32)
+            $0.bottom.equalToSuperview().offset(-Constants.leading)
         }
     }
 }

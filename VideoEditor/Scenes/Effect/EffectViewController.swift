@@ -16,17 +16,30 @@ final class EffectViewController: UIViewController, EffectViewControllerProtocol
     
     var presenter: EffectPresenterProtocol?
     
+    private enum Constants {
+        static let textSize: CGFloat = 20
+        static let spacing: CGFloat = 8
+        static let radius: CGFloat = 6
+        static let top = 24
+        static let leading = 16
+        static let stackBottom = 98
+        static let buttonBottom = 22
+        static let navViewHeight = 52
+        static let buttonHeight = 52
+    }
+    
     private lazy var navView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.addCornerRadius(radius: 6, mask: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
+        view.addCornerRadius(radius: Constants.radius,
+                             mask: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
         return view
     }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Select 1 effect"
-        label.font = UIFont.interBold(20)
+        label.font = UIFont.interBold(Constants.textSize)
         label.textColor = .black
         return label
     }()
@@ -42,7 +55,7 @@ final class EffectViewController: UIViewController, EffectViewControllerProtocol
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.distribution = .fillEqually
-        stackView.spacing = 8
+        stackView.spacing = Constants.spacing
         stackView.axis = .vertical
         return stackView
     }()
@@ -131,11 +144,11 @@ final class EffectViewController: UIViewController, EffectViewControllerProtocol
         navView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            $0.height.equalTo(52)
+            $0.height.equalTo(Constants.navViewHeight)
         }
         
         backButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(22)
+            $0.leading.equalToSuperview().offset(Constants.buttonBottom)
             $0.centerY.equalToSuperview()
         }
         
@@ -145,17 +158,17 @@ final class EffectViewController: UIViewController, EffectViewControllerProtocol
         }
         
         stackView.snp.makeConstraints {
-            $0.top.equalTo(navView.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().offset(16)
+            $0.top.equalTo(navView.snp.bottom).offset(Constants.top)
+            $0.leading.equalToSuperview().offset(Constants.leading)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-98)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-Constants.stackBottom)
         }
         
         nextButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(Constants.leading)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-22)
-            $0.height.equalTo(52)
+            $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-Constants.buttonBottom)
+            $0.height.equalTo(Constants.buttonHeight)
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ImageAnimator.swift
+//  VideoManager.swift
 //  test
 //
 //  Created by Хандымаа Чульдум on 28.01.2023.
@@ -13,7 +13,7 @@ enum VideoRenderingError: Error {
     case error
 }
 
-final class ImageAnimator {
+final class VideoManager {
     static let kTimescale: Int32 = 600
     
     let settings: RenderSettings
@@ -51,9 +51,9 @@ final class ImageAnimator {
     
     private func appendPixelBuffers(writer: VideoWriter) -> Bool {
         
-        let value = Int64(ImageAnimator.kTimescale / settings.fps)
+        let value = Int64(VideoManager.kTimescale / settings.fps)
         let frameDuration = CMTimeMake(value: value,
-                                       timescale: ImageAnimator.kTimescale)
+                                       timescale: VideoManager.kTimescale)
         
         while !images.isEmpty {
             

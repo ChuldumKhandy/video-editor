@@ -15,8 +15,8 @@ protocol EffectRouterProtocol {
     func popViewController()
     func presesentSuccessAlert()
     func presesentErrorAlert()
-    func presesentRenderingView()
-    func dismissRenderingView()
+    func presesentBlockView()
+    func dismissBlockView()
 }
 
 final class RootRouter {
@@ -78,17 +78,17 @@ extension RootRouter: EffectRouterProtocol {
     func presesentErrorAlert() {
         presentOKAlert(withText: "Failed to save video",
                        andTitle: "Error",
-                       titleColor: UIColor(string: "#E31D4D"))
+                       titleColor: UIColor(hex: "#E31D4D"))
     }
     
-    func presesentRenderingView() {
-        let blockView = sceneFactory.createRenderingViewController()
+    func presesentBlockView() {
+        let blockView = sceneFactory.createBlockViewController()
         blockView.modalPresentationStyle = .overCurrentContext
         blockView.modalTransitionStyle = .crossDissolve
         navigationController?.topViewController?.present(blockView, animated: true)
     }
     
-    func dismissRenderingView() {
+    func dismissBlockView() {
         navigationController?.topViewController?.presentedViewController?.dismiss(animated: true)
     }
 }

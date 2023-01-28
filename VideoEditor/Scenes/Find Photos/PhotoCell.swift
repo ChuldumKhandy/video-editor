@@ -7,11 +7,16 @@
 
 import UIKit
 
-class PhotoCell: UICollectionViewCell {
+final class PhotoCell: UICollectionViewCell {
+    
+    private enum Constants {
+        static let radius: CGFloat = 6
+        static let leading = 6
+    }
     
     private lazy var imageView: UIImageView = {
        let imageView = UIImageView()
-        imageView.addCornerRadius(radius: 6)
+        imageView.addCornerRadius(radius: Constants.radius)
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         return imageView
@@ -39,15 +44,15 @@ class PhotoCell: UICollectionViewCell {
     func markAsSelect(_ selected: Bool) {
         self.layer.borderColor = selected ? UIColor.black.cgColor : UIColor.clear.cgColor
         imageView.snp.updateConstraints {
-            $0.leading.top.equalToSuperview().offset(selected ? 6 : 0)
-            $0.trailing.bottom.equalToSuperview().offset(selected ? -6 : 0)
+            $0.leading.top.equalToSuperview().offset(selected ? Constants.leading : 0)
+            $0.trailing.bottom.equalToSuperview().offset(selected ? -Constants.leading : 0)
         }
     }
     
     private func setup() {
         self.addSubview(imageView)
         self.layer.setBorder(color: .clear, width: 2)
-        self.addCornerRadius(radius: 6)
+        self.addCornerRadius(radius: Constants.radius)
         
         makeConstraints()
     }
